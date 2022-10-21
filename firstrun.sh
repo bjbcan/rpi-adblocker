@@ -50,17 +50,18 @@ fi
 # setup dhcpcd.conf
 cat >/etc/dhcpcd.conf <<'DHCPDEOF'
 interface wlan0
-static ip_address=192.168.1.167/24
-static routers=192.168.1.1
-static domain_name_servers=192.168.1.1
-
-interface eth0
 static ip_address=192.168.1.67/24
 static routers=192.168.1.1
 static domain_name_servers=192.168.1.1
 
+#interface eth0
+#static ip_address=192.168.1.67/24
+#static routers=192.168.1.1
+#static domain_name_servers=192.168.1.1
+
 DHCPDEOF
 chmod 600 /etc/dhcpcd.conf
+#sed here to setup ip address properly
 
 # setup wifi
 if [ -f /usr/lib/raspberrypi-sys-mods/imager_custom ]; then
