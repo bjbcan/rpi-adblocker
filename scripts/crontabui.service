@@ -1,0 +1,20 @@
+[Unit]
+Description=Start CrontabUI
+After=network.target
+
+[Service]
+Environment=NODE_PORT=3001
+Environment=ANOTHER=444
+Type=simple
+User=pi
+ExecStart=/usr/bin/node /home/ubuntu/hello_env.js
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+
+## install it
+# sudo ln -s /home/brad/pihole_gravity_writable.service /lib/systemd/system/pihole_gravity_writable.service
+# sudo systemctl daemon-reload
+# systemctl enable pihole_gravity_writable
+# systemctl start pihole_gravity_writable

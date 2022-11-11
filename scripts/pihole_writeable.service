@@ -1,0 +1,18 @@
+[Unit]
+Description=Set Pihole gravity DB to writeable
+After=network.target
+
+[Service]
+#Type=simple
+User=pihole
+ExecStart=/usr/bin/chmod a+w /etc/pihole/gravity.db
+#Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+
+## install it
+# sudo ln -s /home/brad/pihole_gravity_writable.service /lib/systemd/system/pihole_gravity_writable.service
+# sudo systemctl daemon-reload
+# systemctl enable pihole_gravity_writable
+# systemctl start pihole_gravity_writable
