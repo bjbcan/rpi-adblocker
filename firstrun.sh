@@ -1,35 +1,37 @@
 #!/bin/bash
 
-IP_ADDRESS=192.168.1.67
+IP_ADDRESS=192.168.1.69
 ROUTER=192.168.1.1
-NEW_HOSTNAME=pi3eth1815
+NEW_HOSTNAME=pizw69
 SSID=bb_SES_2G
 PSK=e6ef4e9f566f0dacbfc39f7eaa6bb20ab13cc4650580f0e1c60fe7ba888a26e7
+COUNTRY=CA
 
 set +e
 
 CURRENT_HOSTNAME=`cat /etc/hostname | tr -d " \t\n\r"`
-# if [ -f /usr/lib/raspberrypi-sys-mods/imager_custom ]; then
-#    /usr/lib/raspberrypi-sys-mods/imager_custom set_hostname raspberrypi
-# else
-#    echo raspberrypi >/etc/hostname
-#    sed -i "s/127.0.1.1.*$CURRENT_HOSTNAME/127.0.1.1\traspberrypi/g" /etc/hosts
-# fi
+if [ -f /usr/lib/raspberrypi-sys-mods/imager_custom ]; then
+   /usr/lib/raspberrypi-sys-mods/imager_custom set_hostname $NEW_HOSTNAME
+   touch /boot/brad-imager_used_for_set_hostname
+else #typically not executed
+   echo $NEW_HOSTNAME >/etc/hostname
+   sed -i "s/127.0.1.1.*$CURRENT_HOSTNAME/127.0.1.1\t$NEW_HOSTNAME/g" /etc/hosts
+fi
 
-echo $NEW_HOSTNAME >/etc/hostname
-sed -i "s/127.0.1.1.*$CURRENT_HOSTNAME/127.0.1.1\t$NEW_HOSTNAME/g" /etc/hosts
-###
 
 FIRSTUSER=`getent passwd 1000 | cut -d: -f1`
 FIRSTUSERHOME=`getent passwd 1000 | cut -d: -f6`
 if [ -f /usr/lib/raspberrypi-sys-mods/imager_custom ]; then
    /usr/lib/raspberrypi-sys-mods/imager_custom enable_ssh
-else
+   touch /boot/brad-imager_used_for_enable_ssh
+else #typically not executed
    systemctl enable ssh
 fi
+
 if [ -f /usr/lib/userconf-pi/userconf ]; then
    /usr/lib/userconf-pi/userconf 'pi' '$5$WboLUKN8Cl$OKqRPDSsmnRxu2250Ao1hAsr.b00Qx24NxnNP9A39N/'
-else
+   touch /boot/brad-userconf-pi_used
+else #typically not executed
    echo "$FIRSTUSER:"'$5$WboLUKN8Cl$OKqRPDSsmnRxu2250Ao1hAsr.b00Qx24NxnNP9A39N/' | chpasswd -e
    if [ "$FIRSTUSER" != "pi" ]; then
       usermod -l "pi" "$FIRSTUSER"
@@ -47,26 +49,31 @@ else
    fi
 fi
 
-# setup dhcpcd.conf
+# setup dhcpcd.conf: this *is* used. Use eth0 or wlan0 but not both
 cat >/etc/dhcpcd.conf <<'DHCPDEOF'
 interface wlan0
-static ip_address=192.168.1.67/24
-static routers=192.168.1.1
-static domain_name_servers=192.168.1.1
+static ip_address=IPADDRESS/24
+static routers=ROUTER
+static domain_name_servers=ROUTER
 
 #interface eth0
-#static ip_address=192.168.1.67/24
-#static routers=192.168.1.1
-#static domain_name_servers=192.168.1.1
+#static ip_address=IPADDRESS/24
+#static routers=ROUTER
+#static domain_name_servers=ROUTER
 
 DHCPDEOF
-chmod 600 /etc/dhcpcd.conf
+
 #sed here to setup ip address properly
+sed -i "s|IPADDRESS|$IP_ADDRESS|g" /etc/dhcpcd.conf
+sed -i "s|ROUTER|$ROUTER|g" /etc/dhcpcd.conf
+chmod 644 /etc/dhcpcd.conf
+
 
 # setup wifi
 if [ -f /usr/lib/raspberrypi-sys-mods/imager_custom ]; then
-   /usr/lib/raspberrypi-sys-mods/imager_custom set_wlan 'bb_SES_2G' 'e6ef4e9f566f0dacbfc39f7eaa6bb20ab13cc4650580f0e1c60fe7ba888a26e7' 'CA'
-else
+   /usr/lib/raspberrypi-sys-mods/imager_custom set_wlan $SSID $PSK $COUNTRY
+   touch /boot/brad-imager_used_for_wlan
+else #typically not executed
 cat >/etc/wpa_supplicant/wpa_supplicant.conf <<'WPAEOF'
 country=CA
 ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
@@ -74,13 +81,16 @@ ap_scan=1
 
 update_config=1
 network={
-	ssid=bb_SES_2G
-	psk=e6ef4e9f566f0dacbfc39f7eaa6bb20ab13cc4650580f0e1c60fe7ba888a26e7
+	ssid=SSID
+	psk=PSK
 }
 
 WPAEOF
-# could sed replace a SSID and PSK here
-   chmod 600 /etc/wpa_supplicant/wpa_supplicant.conf
+   # sed replace a SSID and PSK here
+   sed -i "s|SSID|$SSID|g" /etc/wpa_supplicant/wpa_supplicant.conf
+   sed -i "s|PSK|$PSK|g" /etc/wpa_supplicant/wpa_supplicant.conf
+
+   chmod 644 /etc/wpa_supplicant/wpa_supplicant.conf
    rfkill unblock wifi
    for filename in /var/lib/systemd/rfkill/*:wlan ; do
        echo 0 > $filename
@@ -88,7 +98,10 @@ WPAEOF
 fi
 # move the file instead of delete
 mv /boot/firstrun.sh /boot/firstrun.sh.done
-# copy before delete
+# copy before change
 cp /boot/cmdline.txt /boot/cmdline.txt.done
 sed -i 's| systemd.run.*||g' /boot/cmdline.txt
+# copy fstab for vol uuid to /boot/fstab
+echo "# `date`" >> /boot/fstab.txt
+grep  'PARTUUID' /etc/fstab | tail -1 | awk '{print $1}' >> /boot/fstab.txt
 exit 0
