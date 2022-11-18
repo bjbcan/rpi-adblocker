@@ -6,6 +6,7 @@ NEW_HOSTNAME=pizw67
 SSID=bb_SES_2G
 PSK=e6ef4e9f566f0dacbfc39f7eaa6bb20ab13cc4650580f0e1c60fe7ba888a26e7
 COUNTRY=CA
+USE_WLAN0=true # default to wlan0, if false then use eth0
 
 set +e
 
@@ -51,22 +52,27 @@ fi
 
 # setup dhcpcd.conf: this *is* used. Use eth0 or wlan0 but not both
 cat >/etc/dhcpcd.conf <<'DHCPDEOF'
+# written by firstrun.sh ${USE_WLAN0}
 interface wlan0
 static ip_address=IPADDRESS/24
 static routers=ROUTER
 static domain_name_servers=ROUTER
-
-#interface eth0
-#static ip_address=IPADDRESS/24
-#static routers=ROUTER
-#static domain_name_servers=ROUTER
-
 DHCPDEOF
 
 #sed here to setup ip address properly
 sed -i "s|IPADDRESS|$IP_ADDRESS|g" /etc/dhcpcd.conf
 sed -i "s|ROUTER|$ROUTER|g" /etc/dhcpcd.conf
 chmod 644 /etc/dhcpcd.conf
+
+#
+# need to setup pihole and dhcpcd.conf to use eth0 since it is not the default in the image
+#
+if [ $USE_WLAN0 == false ]; then 
+   # change to use eth0 instead of wlan0
+   sed -i "s|wlan0|eth0|g" /etc/pihole/setupVars.conf
+   sed -i "s|wlan0|eth0|g" /etc/dhcpcd.conf
+   echo "# eth0 set from sed" >> /etc/dhcpcd.conf
+fi   
 
 
 # setup wifi
