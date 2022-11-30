@@ -3,8 +3,8 @@
 IP_ADDRESS=192.168.1.67
 ROUTER=192.168.1.1
 NEW_HOSTNAME=pizw67
-SSID=bb_SES_2G
-PSK=e6ef4e9f566f0dacbfc39f7eaa6bb20ab13cc4650580f0e1c60fe7ba888a26e7
+SSID=ADD_SSID
+PSK=ADD_PSK
 COUNTRY=CA
 USE_WLAN0=true # default to wlan0, if false then use eth0
 
@@ -81,6 +81,7 @@ if [ -f /usr/lib/raspberrypi-sys-mods/imager_custom ]; then
    touch /boot/brad-imager_used_for_wlan
 else #typically not executed
 cat >/etc/wpa_supplicant/wpa_supplicant.conf <<'WPAEOF'
+# written by firstrun.sh ${USE_WLAN0}
 country=CA
 ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
 ap_scan=1
@@ -90,7 +91,6 @@ network={
 	ssid=SSID
 	psk=PSK
 }
-
 WPAEOF
    # sed replace a SSID and PSK here
    sed -i "s|SSID|$SSID|g" /etc/wpa_supplicant/wpa_supplicant.conf

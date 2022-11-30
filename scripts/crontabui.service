@@ -4,10 +4,10 @@ After=network.target
 
 [Service]
 Environment=NODE_PORT=3001
-Environment=ANOTHER=444
+Environment=CRON_DB_PATH=/home/pi
 Type=simple
 User=pi
-ExecStart=/usr/bin/node /home/ubuntu/hello_env.js
+ExecStart=/usr/bin/node crontab-ui
 Restart=on-failure
 
 [Install]
