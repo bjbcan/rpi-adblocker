@@ -1,5 +1,12 @@
 #!/bin/bash
 
+on_chroot << EOF
+# clean previous install
+ls /etc/pihole/
+rm -rf /etc/pihole/* /etc/.pihole/*
+ls /etc/pihole/
+EOF
+
 # install lighttpd external.conf
 install -v -d					            "${ROOTFS_DIR}/etc/lighttpd"
 install -v -m 644 files/external.conf		"${ROOTFS_DIR}/etc/lighttpd/"
@@ -14,13 +21,13 @@ install -v -m 777 files/block-adlist.sh          "${ROOTFS_DIR}/home/pi/"
 
 on_chroot << EOF
 # clean previous install
-ls /etc/pihole/
-rm -rf /etc/pihole/gravity* /etc/pihole/migration_backup
-ls /etc/pihole/
+# ls /etc/pihole/
+# rm -rf /etc/pihole/gravity* /etc/pihole/migration_backup
+# ls /etc/pihole/
 
 wget -O basic-install.sh https://install.pi-hole.net
 
-# change script to prefer the armv6 binaries
+# change script to prefer the armv6/7/8 binaries
 sed -i 's/funcOutput=\$(get_binary_name)/funcOutput=\"pihole-FTL-armv6-linux-gnueabihf\"/g w /dev/stdout' basic-install.sh
 
 #echo "--- what is in the gravity db adlist? ---"

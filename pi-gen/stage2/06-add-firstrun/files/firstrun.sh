@@ -3,8 +3,8 @@
 IP_ADDRESS=192.168.1.67
 ROUTER=192.168.1.1
 NEW_HOSTNAME=pizw67
-SSID=ADD_SSID
-PSK=ADD_PSK
+SSID=<ADD_SSID>
+PSK=<ADD_PSK>
 COUNTRY=CA
 USE_WLAN0=true # default to wlan0, if false then use eth0
 
@@ -91,6 +91,7 @@ network={
 	ssid=SSID
 	psk=PSK
 }
+
 WPAEOF
    # sed replace a SSID and PSK here
    sed -i "s|SSID|$SSID|g" /etc/wpa_supplicant/wpa_supplicant.conf
