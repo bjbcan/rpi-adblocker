@@ -4,6 +4,8 @@ IP_ADDRESS=192.168.1.67
 ROUTER=192.168.1.1
 NEW_HOSTNAME=pizw67
 SSID=<ADD_SSID>
+# if plaintext password, then `-p` arg is required in:
+# /usr/lib/raspberrypi-sys-mods/imager_custom set_wlan -p $SSID $PSK $COUNTRY
 PSK=<ADD_PSK>
 COUNTRY=CA
 USE_WLAN0=true # default to wlan0, if false then use eth0
@@ -25,29 +27,29 @@ FIRSTUSERHOME=`getent passwd 1000 | cut -d: -f6`
 if [ -f /usr/lib/raspberrypi-sys-mods/imager_custom ]; then
    /usr/lib/raspberrypi-sys-mods/imager_custom enable_ssh
    touch /boot/brad-imager_used_for_enable_ssh
-else #typically not executed
-   systemctl enable ssh
+# else #typically not executed
+#    systemctl enable ssh
 fi
 
 if [ -f /usr/lib/userconf-pi/userconf ]; then
    /usr/lib/userconf-pi/userconf 'pi' '$5$WboLUKN8Cl$OKqRPDSsmnRxu2250Ao1hAsr.b00Qx24NxnNP9A39N/'
    touch /boot/brad-userconf-pi_used
-else #typically not executed
-   echo "$FIRSTUSER:"'$5$WboLUKN8Cl$OKqRPDSsmnRxu2250Ao1hAsr.b00Qx24NxnNP9A39N/' | chpasswd -e
-   if [ "$FIRSTUSER" != "pi" ]; then
-      usermod -l "pi" "$FIRSTUSER"
-      usermod -m -d "/home/pi" "pi"
-      groupmod -n "pi" "$FIRSTUSER"
-      if grep -q "^autologin-user=" /etc/lightdm/lightdm.conf ; then
-         sed /etc/lightdm/lightdm.conf -i -e "s/^autologin-user=.*/autologin-user=pi/"
-      fi
-      if [ -f /etc/systemd/system/getty@tty1.service.d/autologin.conf ]; then
-         sed /etc/systemd/system/getty@tty1.service.d/autologin.conf -i -e "s/$FIRSTUSER/pi/"
-      fi
-      if [ -f /etc/sudoers.d/010_pi-nopasswd ]; then
-         sed -i "s/^$FIRSTUSER /pi /" /etc/sudoers.d/010_pi-nopasswd
-      fi
-   fi
+# else #typically not executed
+#    echo "$FIRSTUSER:"'$5$WboLUKN8Cl$OKqRPDSsmnRxu2250Ao1hAsr.b00Qx24NxnNP9A39N/' | chpasswd -e
+#    if [ "$FIRSTUSER" != "pi" ]; then
+#       usermod -l "pi" "$FIRSTUSER"
+#       usermod -m -d "/home/pi" "pi"
+#       groupmod -n "pi" "$FIRSTUSER"
+#       if grep -q "^autologin-user=" /etc/lightdm/lightdm.conf ; then
+#          sed /etc/lightdm/lightdm.conf -i -e "s/^autologin-user=.*/autologin-user=pi/"
+#       fi
+#       if [ -f /etc/systemd/system/getty@tty1.service.d/autologin.conf ]; then
+#          sed /etc/systemd/system/getty@tty1.service.d/autologin.conf -i -e "s/$FIRSTUSER/pi/"
+#       fi
+#       if [ -f /etc/sudoers.d/010_pi-nopasswd ]; then
+#          sed -i "s/^$FIRSTUSER /pi /" /etc/sudoers.d/010_pi-nopasswd
+#       fi
+#    fi
 fi
 
 # setup dhcpcd.conf: this *is* used. Use eth0 or wlan0 but not both
@@ -79,30 +81,31 @@ fi
 if [ -f /usr/lib/raspberrypi-sys-mods/imager_custom ]; then
    /usr/lib/raspberrypi-sys-mods/imager_custom set_wlan $SSID $PSK $COUNTRY
    touch /boot/brad-imager_used_for_wlan
-else #typically not executed
-cat >/etc/wpa_supplicant/wpa_supplicant.conf <<'WPAEOF'
-# written by firstrun.sh ${USE_WLAN0}
-country=CA
-ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
-ap_scan=1
+# else #typically not executed
+# cat >/etc/wpa_supplicant/wpa_supplicant.conf <<'WPAEOF'
+# # written by firstrun.sh ${USE_WLAN0}
+# country=CA
+# ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+# ap_scan=1
 
-update_config=1
-network={
-	ssid=SSID
-	psk=PSK
-}
+# update_config=1
+# network={
+# 	ssid=SSID
+# 	psk=PSK
+# }
 
-WPAEOF
-   # sed replace a SSID and PSK here
-   sed -i "s|SSID|$SSID|g" /etc/wpa_supplicant/wpa_supplicant.conf
-   sed -i "s|PSK|$PSK|g" /etc/wpa_supplicant/wpa_supplicant.conf
+# WPAEOF
+#    # sed replace a SSID and PSK here
+#    sed -i "s|SSID|$SSID|g" /etc/wpa_supplicant/wpa_supplicant.conf
+#    sed -i "s|PSK|$PSK|g" /etc/wpa_supplicant/wpa_supplicant.conf
 
-   chmod 644 /etc/wpa_supplicant/wpa_supplicant.conf
-   rfkill unblock wifi
-   for filename in /var/lib/systemd/rfkill/*:wlan ; do
-       echo 0 > $filename
-   done
+#    chmod 644 /etc/wpa_supplicant/wpa_supplicant.conf
+#    rfkill unblock wifi
+#    for filename in /var/lib/systemd/rfkill/*:wlan ; do
+#        echo 0 > $filename
+#    done
 fi
+
 # move the file instead of delete
 mv /boot/firstrun.sh /boot/firstrun.sh.done
 # copy before change
