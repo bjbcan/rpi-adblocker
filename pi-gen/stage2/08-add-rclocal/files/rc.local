@@ -1,0 +1,41 @@
+#!/bin/sh -e
+#
+# rc.local
+#
+# This script is executed at the end of each multiuser runlevel.
+# Make sure that the script will "exit 0" on success or any other
+# value on error.
+#
+# In order to enable or disable this script just change the execution
+# bits.
+#
+# By default this script does nothing.
+
+# Print the IP address
+_IP=$(hostname -I) || true
+if [ "$_IP" ]; then
+  printf "My IP address is %s\n" "$_IP"
+fi
+
+#
+# setup IP display in login prompt
+#
+PRE_MSG="Debian GNU/Linux 11" # this is from the original /etc/issue
+IP_ETH0=$(/sbin/ifconfig eth0 | grep 'inet ' | cut -f2 | awk '{ print $2}')
+IP_WLAN0=$(/sbin/ifconfig wlan0 | grep 'inet ' | cut -f2 | awk '{ print $2}')
+
+printf "%s %s %s\n\n%s %s\n\n" "$PRE_MSG" '\n' '\l' eth0:"$IP_ETH0", wlan0:"$IP_WLAN0" > "/etc/issue"
+
+#
+# enbable and start services
+#
+systemctl enable crontabui
+systemctl start crontabui
+systemctl enable pihole_writeable.timer
+systemctl start pihole_writeable.timer
+systemctl enable pihole_writeable
+systemctl start pihole_writeable
+
+
+
+exit 0

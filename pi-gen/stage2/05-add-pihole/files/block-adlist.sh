@@ -6,7 +6,7 @@ export PATH="$PATH:/usr/bin:/usr/local/bin/"
 
 # installed adlist ids
 FACESTAGRAM=2
-YOUTUBETWICH=3
+YOUTUBETWITCH=3
 TIKTOK=4
 ADULTGAMBLING=5
 
@@ -34,5 +34,5 @@ elif [[ $1 = "-u" ]]; then # unblock
     piholeupdate $block $adlist
 else
     echo "Usage: %s (-b|-u) <LIST_ID> to block or unblock"
-    echo " FACESTAGRAM=2\n YOUTUBETWICH=3 \nTIKTOK=4 \nADULTGAMBLING=5"
+    echo " FACESTAGRAM=${FACESTAGRAM}\n YOUTUBETWITCH=${YOUTUBETWITCH} \nTIKTOK=${TIKTOK} \nADULTGAMBLING=${ADULTGAMBLING}"
 fi
