@@ -5,6 +5,8 @@
 export PATH="$PATH:/usr/bin:/usr/local/bin/"
 
 # installed adlist ids
+adlists=(null null FACESTAGRAM YOUTUBETWITCH TIKTOK ADULTGAMBLING)
+
 FACESTAGRAM=2
 YOUTUBETWITCH=3
 TIKTOK=4
@@ -16,11 +18,11 @@ piholeupdate () {
     echo pihole restartdns
     pihole restartdns
     if [[ $1 = "true" ]]; then
-        echo 'blocking adlist ${adlist}...'
-        logger pihole: blocking ${adlist}
+        echo "blocking adlist ${adlists[$adlist]} ..."
+        logger pihole: blocking ${adlists[$adlist]}
     else
-        echo 'unblocking adlist ${adlist}...'
-        logger pihole: unblocking ${adlist} 
+        echo "unblocking adlist ${adlists[$adlist]} ..."
+        logger pihole: unblocking ${adlists[$adlist]} 
     fi
 }
 

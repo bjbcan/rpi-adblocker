@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # install two systemd services
-install -v -m 644 files/pihole_writeable.service		"${ROOTFS_DIR}/lib/systemd/system/"
-install -v -m 644 files/pihole_writeable.timer		"${ROOTFS_DIR}/lib/systemd/system/"
+# install -v -m 644 files/pihole_writeable.service		"${ROOTFS_DIR}/lib/systemd/system/"
+# install -v -m 644 files/pihole_writeable.timer		"${ROOTFS_DIR}/lib/systemd/system/"
 install -v -m 644 files/crontabui.service		    "${ROOTFS_DIR}/lib/systemd/system/"
 
 install -v -d 			                   "${ROOTFS_DIR}/home/pi/crontabui"

@@ -7,7 +7,7 @@ StartLimitBurst=5
 [Service]
 Environment=PORT=3001
 Environment=CRON_DB_PATH=/home/pi/crontabui
-Environment=CRON_PATH=/home/pi
+Environment=CRON_PATH=/home/pi/crontabui
 #Environment=PATH=/usr/bin:/usr/local/bin
 #Environment=HOME=/home/pi 
 #Environment=MAIL=pi@raspberry.blorg

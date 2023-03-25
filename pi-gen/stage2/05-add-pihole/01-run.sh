@@ -63,6 +63,10 @@ killall -r pihole
 rm -rf /var/run/pihole/FTL.sock
 ps aux | grep -i pihole
 
+# add user pi to group pihole so it can run block/unblock adlist/domainlist
+echo "----"
+adduser pi pihole
+
 
 EOF
 
