@@ -23,7 +23,7 @@ echo "copying contents from source to pi-gen build target directory"
 cp -vR $SOURCE/* .
 
 echo "done."
-#scp -r /Users/brad/Desktop/rpi-adblocker/pi-gen/. brad@macmini:~/pi-gen/
+scp -r /Users/brad/Desktop/rpi-adblocker/pi-gen/. brad@macmini:~/pi-gen/
 
 
 # gzip, send to macmini, copy to sd; [!] try this with 4k block size (faster?)
@@ -33,13 +33,15 @@ IMG=2022-11-24-pigennode2-lite.img;
 ssh macmini "gzip -c ~/pi-gen/work/pigennode2/export-image/$IMG > ~/$IMG.gz"; 
 scp macmini:~/$IMG.gz .; 
 sudo diskutil unmount /dev/disk2s1; 
-sudo dd if=2022-11-24-pigennode2-lite.img of=/dev/disk2 bs=4k status=progress
+IMG=2023-08-08-bradblocker-lite.img
+sudo dd if=$IMG of=/dev/disk2 bs=4k status=progress
+
 
 # in guest VM
 ./mounthost.sh
 ./copyfiles.sh
 sudo su
-CONTINUE=1 ./build.sh; mv deploy/image_2023-01-11-bradblocker-lite.zip ../DesktopHost/rpi-adblocker/; pushd .; cd ../DesktopHost/rpi-adblocker/; unzip image_2023-01-11-bradblocker-lite.zip ; popd
+CONTINUE=1 ./build.sh; mv deploy/image_2023-08-08-bradblocker-lite.zip ../DesktopHost/rpi-adblocker/; pushd .; cd ../DesktopHost/rpi-adblocker/; unzip image_2023-08-08-bradblocker-lite.zip ; popd
 
 # in mac host
 # from /Users/brad/Desktop/rpi_qemu/macos-qemu-rpi/native-emulation
