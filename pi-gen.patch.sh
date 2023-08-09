@@ -41,12 +41,14 @@ sudo dd if=$IMG of=/dev/disk2 bs=4k status=progress
 ./mounthost.sh
 ./copyfiles.sh
 sudo su
-CONTINUE=1 ./build.sh; mv deploy/image_2023-08-08-bradblocker-lite.zip ../DesktopHost/rpi-adblocker/; pushd .; cd ../DesktopHost/rpi-adblocker/; unzip image_2023-08-08-bradblocker-lite.zip ; popd
+IMG_FILE=2023-08-09-bradblocker-lite
+CONTINUE=1 ./build.sh; mv work/export-image/$IMG_FILE.img ../DesktopHost/rpi-adblocker/ ; mv deploy/image_$IMG_FILE.zip ../DesktopHost/rpi-adblocker/
 
 # in mac host
 # from /Users/brad/Desktop/rpi_qemu/macos-qemu-rpi/native-emulation
-IMG_FILE=2023-01-22-bradblocker-lite.img
-cp  /Users/brad/Desktop/rpi-adblocker/$IMG_FILE ../../.
-qemu-img resize -f raw "../../$IMG_FILE" 4G
+IMG_FILE=2023-08-09-bradblocker-lite
+cp  /Users/brad/Desktop/rpi-adblocker/$IMG_FILE.img ../../.
+qemu-img resize -f raw "../../$IMG_FILE.img" 4G
 #set IMAGE_FILE in run.sh
+sed -i.bak "s|readonly\ IMAGE=.*|readonly\ IMAGE\=\'$IMG_FILE\'|g" run.sh
 ./run.sh
