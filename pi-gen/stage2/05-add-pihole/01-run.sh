@@ -2,6 +2,7 @@
 
 # install lighttpd external.conf
 install -v -d			            "${ROOTFS_DIR}/etc/lighttpd"
+install -v -d			            "${ROOTFS_DIR}/etc/lighttpd/conf-enabled/"
 install -v -m 644 files/external.conf		"${ROOTFS_DIR}/etc/lighttpd/conf-enabled/"
 
 # unattended pihole install
