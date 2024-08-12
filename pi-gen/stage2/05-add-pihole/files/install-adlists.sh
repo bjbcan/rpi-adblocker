@@ -4,9 +4,9 @@
 #
 export PATH="$PATH:/usr/bin:/usr/local/bin/"
 
-adlists=(facebook_instagram youtube_twitch tiktok adult_gambling)
+adlists=(facebook_instagram tiktok adult_gambling)
 facebook_instagram="https://raw.githubusercontent.com/imkarthikk/pihole-facebook/master/pihole-facebook.txt"
-youtube_twitch="https://raw.githubusercontent.com/bjbredis/adlist/main/youtube.hosts"
+#youtube_twitch="https://raw.githubusercontent.com/bjbredis/adlist/main/youtube.hosts"
 tiktok="https://raw.githubusercontent.com/danhorton7/pihole-block-tiktok/main/tiktok.txt"
 adult_gambling="https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling-porn/hosts"
 
