@@ -10,6 +10,7 @@ WHOLEWEB=1
 GAMING=2
 SOCIAL=3
 STREAMING=4
+YOUTUBE=5
 
 piholeupdate () {
     echo sqlite3 /etc/pihole/gravity.db "update domainlist set enabled = $block where id = $domainlist;"
@@ -35,5 +36,5 @@ elif [[ $1 = "-u" ]]; then # unblock
     piholeupdate $block $domainlist
 else
     echo "Usage: %s (-b|-u) <DOMAINLIST_ID> to block or unblock"
-    echo " WHOLEWEB=${WHOLEWEB} \nGAMING=${GAMING} \nSOCIAL=${SOCIAL} \nSTREAMING=${STREAMING}"
+    echo " WHOLEWEB=${WHOLEWEB} \nGAMING=${GAMING} \nSOCIAL=${SOCIAL} \nSTREAMING=${STREAMING} \nYOUTUBE=${YOUTUBE}"
 fi
