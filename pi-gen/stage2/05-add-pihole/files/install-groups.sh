@@ -9,12 +9,12 @@ WHOLEWEB=1
 GAMING=2
 SOCIAL=3
 STREAMING=4
+YOUTUBE=5
+FACEBOOKINSTA=6
+TIKTOK=7
 
-# installed adlist ids
-FACESTAGRAM=2
-YOUTUBETWITCH=3
-TIKTOK=4
-ADULTGAMBLING=5
+# installed adlist ids; #1 is StevenBlack list
+ADULTGAMBLING=2
 
 # installed Groups
 DEFAULT=0
