@@ -16,7 +16,7 @@ NODEURL=$NODEV6URL
 
 echo "=~+~+~ ARMv == ${ARMV} and ${NODEURL} and v6=${NODEV6URL} and v7=${NODEV7URL}"
 
-wget -O - $NODEV6URL | tar xz
+wget -O - $NODEV7URL | tar xz
 rm -rf node-*.tar.gz
 cp -R node-*-linux-*/* /usr/local
 rm -rf node-*-linux-*
