@@ -4,14 +4,11 @@
 #
 export PATH="$PATH:/usr/bin:/usr/local/bin/"
 
-adlists=(facebook_instagram tiktok adult_gambling)
-facebook_instagram="https://raw.githubusercontent.com/imkarthikk/pihole-facebook/master/pihole-facebook.txt"
+adlists=(adult_gambling)
+#facebook_instagram="https://raw.githubusercontent.com/imkarthikk/pihole-facebook/master/pihole-facebook.txt"
 #youtube_twitch="https://raw.githubusercontent.com/bjbredis/adlist/main/youtube.hosts"
-tiktok="https://raw.githubusercontent.com/danhorton7/pihole-block-tiktok/main/tiktok.txt"
+#tiktok="https://raw.githubusercontent.com/danhorton7/pihole-block-tiktok/main/tiktok.txt"
 adult_gambling="https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling-porn/hosts"
-
-curl -o /dev/null -Isw 'facebook: %{http_code}\n' $facebook_instagram
-curl -o /dev/null -Isw 'youtube: %{http_code}\n' $youtube_twitch
 
 
 for adlist in ${adlists[@]} ; do
