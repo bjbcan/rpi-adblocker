@@ -5,12 +5,8 @@
 export PATH="$PATH:/usr/bin:/usr/local/bin/"
 
 # installed adlist ids
-adlists=(null null FACESTAGRAM YOUTUBETWITCH TIKTOK ADULTGAMBLING)
-
-FACESTAGRAM=2
-YOUTUBETWITCH=3
-TIKTOK=4
-ADULTGAMBLING=5
+adlists=(null null ADULTGAMBLING)
+ADULTGAMBLING=2
 
 piholeupdate () {
     echo sqlite3 /etc/pihole/gravity.db "update adlist set enabled = $block where id = $adlist;"
@@ -36,5 +32,5 @@ elif [[ $1 = "-u" ]]; then # unblock
     piholeupdate $block $adlist
 else
     echo "Usage: %s (-b|-u) <LIST_ID> to block or unblock"
-    echo " FACESTAGRAM=${FACESTAGRAM}\n YOUTUBETWITCH=${YOUTUBETWITCH} \nTIKTOK=${TIKTOK} \nADULTGAMBLING=${ADULTGAMBLING}"
+    echo "ADULTGAMBLING=${ADULTGAMBLING}"
 fi
