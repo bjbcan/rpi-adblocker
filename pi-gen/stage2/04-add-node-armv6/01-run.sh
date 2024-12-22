@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export NODEV7URL=https://builds.nodejs.org/download/release/v19.4.0/node-v19.4.0-linux-armv7l.tar.gz
+export NODEV7URL=https://unofficial-builds.nodejs.org/download/release/v19.4.0/node-v19.4.0-linux-armv7l.tar.gz
 export NODEV6URL=https://unofficial-builds.nodejs.org/download/release/v19.4.0/node-v19.4.0-linux-armv6l.tar.gz
 
 on_chroot << EOF
