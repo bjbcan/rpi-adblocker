@@ -5,7 +5,7 @@
 export PATH="$PATH:/usr/bin:/usr/local/bin/"
 
 # installed domain ids
-domainlists=(null all social gaming streaming_video)
+domainlists=(null all gaming social streaming_video youtube facebookinsta tiktok)
 WHOLEWEB=1
 GAMING=2
 SOCIAL=3
