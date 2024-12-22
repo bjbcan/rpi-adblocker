@@ -42,14 +42,7 @@ sqlite3 /etc/pihole/gravity.db ".dump group"
 # 	PRIMARY KEY (adlist_id, group_id)
 # );
 echo "associate Adlists to Default and Kids group ID=1 (Default is group id=0)"
-sqlite3 /etc/pihole/gravity.db "insert or ignore into adlist_by_group (adlist_id, group_id) VALUES ($FACESTAGRAM, $KIDS);"
-sqlite3 /etc/pihole/gravity.db "insert or ignore into adlist_by_group (adlist_id, group_id) VALUES ($YOUTUBETWITCH, $KIDS);"
-sqlite3 /etc/pihole/gravity.db "insert or ignore into adlist_by_group (adlist_id, group_id) VALUES ($TIKTOK, $KIDS);"
 sqlite3 /etc/pihole/gravity.db "insert or ignore into adlist_by_group (adlist_id, group_id) VALUES ($ADULTGAMBLING, $KIDS);"
-# sqlite3 /etc/pihole/gravity.db "insert or ignore into adlist_by_group (adlist_id, group_id) VALUES ($FACESTAGRAM, $DEFAULT);"
-# sqlite3 /etc/pihole/gravity.db "insert or ignore into adlist_by_group (adlist_id, group_id) VALUES ($YOUTUBETWITCH, $DEFAULT);"
-# sqlite3 /etc/pihole/gravity.db "insert or ignore into adlist_by_group (adlist_id, group_id) VALUES ($TIKTOK, $DEFAULT);"
-# sqlite3 /etc/pihole/gravity.db "insert or ignore into adlist_by_group (adlist_id, group_id) VALUES ($ADULTGAMBLING, $DEFAULT);"
 # need to do for default as well?
 sqlite3 /etc/pihole/gravity.db ".dump adlist_by_group"
 
@@ -65,8 +58,7 @@ sqlite3 /etc/pihole/gravity.db "insert or ignore into domainlist_by_group (domai
 sqlite3 /etc/pihole/gravity.db "insert or ignore into domainlist_by_group (domainlist_id, group_id) VALUES ($GAMING, $KIDS);"
 sqlite3 /etc/pihole/gravity.db "insert or ignore into domainlist_by_group (domainlist_id, group_id) VALUES ($SOCIAL, $KIDS);"
 sqlite3 /etc/pihole/gravity.db "insert or ignore into domainlist_by_group (domainlist_id, group_id) VALUES ($STREAMING, $KIDS);"
-# sqlite3 /etc/pihole/gravity.db "insert or ignore into domainlist_by_group (domainlist_id, group_id) VALUES ($WHOLEWEB, $DEFAULT);"
-# sqlite3 /etc/pihole/gravity.db "insert or ignore into domainlist_by_group (domainlist_id, group_id) VALUES ($GAMING, $DEFAULT);"
-# sqlite3 /etc/pihole/gravity.db "insert or ignore into domainlist_by_group (domainlist_id, group_id) VALUES ($SOCIAL, $DEFAULT);"
-# sqlite3 /etc/pihole/gravity.db "insert or ignore into domainlist_by_group (domainlist_id, group_id) VALUES ($STREAMING, $DEFAULT);"
+sqlite3 /etc/pihole/gravity.db "insert or ignore into domainlist_by_group (domainlist_id, group_id) VALUES ($YOUTUBE, $KIDS);"
+sqlite3 /etc/pihole/gravity.db "insert or ignore into domainlist_by_group (domainlist_id, group_id) VALUES ($FACEBOOKINSTA, $KIDS);"
+sqlite3 /etc/pihole/gravity.db "insert or ignore into domainlist_by_group (domainlist_id, group_id) VALUES ($TIKTOK, $KIDS);"
 sqlite3 /etc/pihole/gravity.db ".dump domainlist_by_group"
