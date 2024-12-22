@@ -34,7 +34,7 @@ sqlite3 /etc/pihole/gravity.db "insert or ignore into 'group' (enabled, name, de
 sqlite3 /etc/pihole/gravity.db ".dump group"
 
 
-# associate Adlists 2,3,4,5 to Default and Kids group
+# associate Adlists 2 to Default and Kids group
 # CREATE TABLE adlist_by_group
 # (
 # 	adlist_id INTEGER NOT NULL REFERENCES adlist (id),
