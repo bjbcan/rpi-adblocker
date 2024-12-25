@@ -2,6 +2,7 @@
 
 export NODEV7URL=https://nodejs.org/dist/v19.9.0/node-v19.9.0-linux-armv7l.tar.gz
 export NODEV6URL=https://unofficial-builds.nodejs.org/download/release/v19.4.0/node-v19.4.0-linux-armv6l.tar.gz
+export NODEARM64URL=https://nodejs.org/dist/v19.9.0/node-v19.9.0-linux-arm64.tar.gz
 
 on_chroot << EOF
 
@@ -16,7 +17,7 @@ NODEURL=$NODEV6URL
 
 echo "=~+~+~ ARMv == ${ARMV} and ${NODEURL} and v6=${NODEV6URL} and v7=${NODEV7URL}"
 
-wget -O - $NODEV7URL | tar xz
+wget -O - $NODEARM64URL | tar xz
 rm -rf node-*.tar.gz
 cp -R node-*-linux-*/* /usr/local
 rm -rf node-*-linux-*
