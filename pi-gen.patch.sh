@@ -23,32 +23,31 @@ echo "copying contents from source to pi-gen build target directory"
 cp -vR $SOURCE/* .
 
 echo "done."
-scp -r /Users/brad/Desktop/rpi-adblocker/pi-gen/. brad@macmini:~/pi-gen/
 
+IMG_NAME=2022-11-24-bradblocker-lite;
 
+# in guest VM
+./mounthost.sh  # mount the host files in the guest/build OS
+./copyfiles.sh # copy the build files from host to guest/build OS
+sudo CONTINUE=1 ./build.sh; # continue from last build 
+sudo CLEAN=1 ./build.sh; # rebuild last stage
+sudo ./build.sh; # start from fresh
+mv work/bradblocker/export-image/$IMG_NAME.img ../DesktopHost/rpi-adblocker/ ; 
+mv deploy/image_$IMG_NAME.zip ../DesktopHost/rpi-adblocker/
+
+# in host Mac
 # gzip, send to macmini, copy to sd; [!] try this with 4k block size (faster?)
 # 512b is 1506 kB/s
 # 4k is 5277 kB/s
-IMG=2022-11-24-pigennode2-lite.img; 
-ssh macmini "gzip -c ~/pi-gen/work/pigennode2/export-image/$IMG > ~/$IMG.gz"; 
-scp macmini:~/$IMG.gz .; 
 sudo diskutil unmount /dev/disk2s1; 
-IMG=2023-08-08-bradblocker-lite.img
-sudo dd if=$IMG of=/dev/disk2 bs=4k status=progress
+sudo dd if=$IMG_NAME.img of=/dev/disk2 bs=4k status=progress
 
-
-# in guest VM
-./mounthost.sh
-./copyfiles.sh
-sudo su
-IMG_FILE=2023-08-09-bradblocker-lite
-CONTINUE=1 ./build.sh; mv work/export-image/$IMG_FILE.img ../DesktopHost/rpi-adblocker/ ; mv deploy/image_$IMG_FILE.zip ../DesktopHost/rpi-adblocker/
-
-# in mac host
-# from /Users/brad/Desktop/rpi_qemu/macos-qemu-rpi/native-emulation
-IMG_FILE=2023-08-09-bradblocker-lite
-cp  /Users/brad/Desktop/rpi-adblocker/$IMG_FILE.img ../../.
-qemu-img resize -f raw "../../$IMG_FILE.img" 4G
+# Run some tests in QEMU
+# in host Mac
+$QEMU_IMG_LOC=/Users/brad/Desktop/rpi_qemu/macos-qemu-rpi/native-emulation
+$IMG_LOC=/Users/brad/Desktop/rpi-adblocker
+cp $IMG_LOC/$IMG_NAME.img $QEMU_IMG_LOC
+qemu-img resize -f raw $IMG_LOG/$IMG_NAME.img 4G
 #set IMAGE_FILE in run.sh
-sed -i.bak "s|readonly\ IMAGE=.*|readonly\ IMAGE\=\'$IMG_FILE\'|g" run.sh
+sed -i.bak "s|readonly\ IMAGE=.*|readonly\ IMAGE\=\'$IMG_NAME\'|g" run.sh
 ./run.sh
