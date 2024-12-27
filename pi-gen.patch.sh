@@ -51,3 +51,15 @@ qemu-img resize -f raw $IMG_LOG/$IMG_NAME.img 4G
 #set IMAGE_FILE in run.sh
 sed -i.bak "s|readonly\ IMAGE=.*|readonly\ IMAGE\=\'$IMG_NAME\'|g" run.sh
 ./run.sh
+
+# in guest linux VM
+IMAGE_FILE=../pi-gen/deploy/2024-12-25-bradblocker-lite.img
+PTB_FILE=bcm2710-rpi-3-b-plus.dtb
+KERNEL_FILE=kernel8.img
+emu-img resize -f raw "$IMAGE_FILE" 4G
+sudo qemu-system-aarch64 \
+	-m 1024 -M raspi3 -kernel kernel8.img \
+	-dtb bcm2710-rpi-3-b-plus.dtb -sd ${IMAGE_FILE} \
+	-append "console=ttyAMA0 root=/dev/mmcblk0p2 rw rootwait rootfstype=ext4" \
+	-nographic -device usb-net,netdev=net0 \
+	-netdev user,id=net0,hostfwd=tcp::5555-:22,hostfwd=tcp::8888-:80
