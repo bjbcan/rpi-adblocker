@@ -32,7 +32,8 @@ ls /etc/pihole/
 wget -O basic-install.sh https://install.pi-hole.net
 
 # change script to prefer the armv6/7/8 binaries
-sed -i 's/funcOutput=\$(get_binary_name)/funcOutput=\"pihole-FTL-armv6-linux-gnueabihf\"/g w /dev/stdout' basic-install.sh
+#sed -i 's/funcOutput=\$(get_binary_name)/funcOutput=\"pihole-FTL-armv6-linux-gnueabihf\"/g w /dev/stdout' basic-install.sh
+#sed -i 's/funcOutput=\$(get_binary_name)/funcOutput=\"pihole-FTL-armv8-linux-gnueabihf\"/g w /dev/stdout' basic-install.sh
 
 PIHOLE_SKIP_OS_CHECK=true bash basic-install.sh --unattended
 
