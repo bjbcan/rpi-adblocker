@@ -39,8 +39,8 @@ mv deploy/image_$IMG_NAME.zip ../DesktopHost/rpi-adblocker/
 # gzip, send to macmini, copy to sd; [!] try this with 4k block size (faster?)
 # 512b is 1506 kB/s
 # 4k is 5277 kB/s
-sudo diskutil unmount /dev/disk2s1; 
-sudo dd if=$IMG_NAME.img of=/dev/disk2 bs=4k status=progress
+sudo diskutil unmount /dev/disk4s1; 
+sudo dd if=$IMG_NAME.img of=/dev/disk4 bs=2m status=progress
 
 # Run some tests in QEMU
 # in host Mac
@@ -52,13 +52,13 @@ qemu-img resize -f raw $IMG_LOG/$IMG_NAME.img 4G
 sed -i.bak "s|readonly\ IMAGE=.*|readonly\ IMAGE\=\'$IMG_NAME\'|g" run.sh
 ./run.sh
 
-# in guest linux VM
-IMAGE_FILE=../pi-gen/deploy/2024-12-25-bradblocker-lite.img
+# from pi-run dir
+IMAGE_FILE=../pi-gen/deploy/2025-01-05-bradblocker-lite-qemu.img
 PTB_FILE=bcm2710-rpi-3-b-plus.dtb
 KERNEL_FILE=kernel8.img
-emu-img resize -f raw "$IMAGE_FILE" 4G
+qemu-img resize -f raw "$IMAGE_FILE" 4G
 sudo qemu-system-aarch64 \
-	-m 1024 -M raspi3 -kernel kernel8.img \
+	-m 1024 -M raspi3b -kernel kernel8.img \
 	-dtb bcm2710-rpi-3-b-plus.dtb -sd ${IMAGE_FILE} \
 	-append "console=ttyAMA0 root=/dev/mmcblk0p2 rw rootwait rootfstype=ext4" \
 	-nographic -device usb-net,netdev=net0 \
