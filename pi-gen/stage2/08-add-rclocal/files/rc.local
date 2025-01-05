@@ -20,7 +20,7 @@ fi
 #
 # setup IP display in login prompt
 #
-PRE_MSG="Debian GNU/Linux 11" # this is from the original /etc/issue
+PRE_MSG="Debian GNU/Linux 12" # this is from the original /etc/issue
 IP_ETH0=$(/sbin/ifconfig eth0 | grep 'inet ' | cut -f2 | awk '{ print $2}')
 IP_WLAN0=$(/sbin/ifconfig wlan0 | grep 'inet ' | cut -f2 | awk '{ print $2}')
 
@@ -35,7 +35,10 @@ systemctl enable pihole_writeable.timer
 systemctl start pihole_writeable.timer
 systemctl enable pihole_writeable
 systemctl start pihole_writeable
-
+# systemctl enable wifi_hotspot_disable.timer
+# systemctl start wifi_hotspot_disable.timer
+systemctl enable wifi_hotspot_disable
+systemctl start wifi_hotspot_disable
 
 
 exit 0

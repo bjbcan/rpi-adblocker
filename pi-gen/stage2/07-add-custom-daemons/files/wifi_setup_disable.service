@@ -1,0 +1,19 @@
+[Unit]
+Description=Disable wifi hotspot setup network after 10m
+After=network.target
+
+[Service]
+#Type=simple
+User=root
+ExecStartPre=/bin/sleep 90
+ExecStart=/usr/bin/nmcli conn down Hotspot
+#Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+
+## install it
+# sudo ln -s /home/brad/pihole_gravity_writable.service /lib/systemd/system/pihole_gravity_writable.service
+# sudo systemctl daemon-reload
+# systemctl enable pihole_gravity_writable
+# systemctl start pihole_gravity_writable

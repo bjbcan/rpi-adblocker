@@ -8,6 +8,7 @@ export PATH="$PATH:/usr/bin:/usr/local/bin/"
 domainlists=(all social gaming streaming_video youtube facebookinsta tiktok)
 all="(.*)"
 gaming="(\.|^)nintendo\.com$|(\.|^)nintendo\.net$|(\.|^)roblox\.com$|(\.|^)rbxcdn\.com$|(\.|^)crazygames\.com$|(\.|^)poki\.com$|(\.|^)tracker\.gg$|(\.|^)gamepix\.com$|(\.|^)shellshockers\.net$|(\.|^)nintendo\.net$|(\.|^)playstation\.net$"
+gaming+="|(\.|^)brawlstars\.com$|(\.|^)brawlstarsgame\.com$|(\.|^)supercell\.com$"
 social="(\.|^)snapchat\.com$|(\.|^)sc-cdn\.net$|(\.|^)sc-cdn\.net$|(\.|^)t.co$|(\.|^)twitter\.com$|(\.|^)twttr\.com$|(\.|^)reddit\.com$|(\.|^)redd.it$|(\.|^)whatsapp\.com$|(\.|^)discordapp\.com$|(\.|^)signal\.org$"
 streaming_video="(\.|^)netflix\.com$|(\.|^)netflix\.ca$|(\.|^)netflix\.net$|(\.|^)dssott\.com$|(\.|^)disneyplus\.com$|(\.|^)disney-plus\.net$|(\.|^)primevideo\.com$|(\.|^)amazonvideo\.com$|(\.|^)twitch\.tv$"
 youtube="(\.|^)youtube\.com$|(\.|^)googlevideo\.com$|(\.|^)googleapis\.com$"

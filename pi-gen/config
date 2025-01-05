@@ -1,6 +1,6 @@
-IMG_NAME=bradblocker
+IMG_NAME=adblocker
 arm_64bit=1
-RELEASE=bullseye
+RELEASE=bookworm
 DEPLOY_COMPRESSION=none
 USE_QEMU=1
 TIMEZONE_DEFAULT="US/Eastern"
