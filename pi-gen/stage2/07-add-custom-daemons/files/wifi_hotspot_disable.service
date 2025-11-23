@@ -1,0 +1,13 @@
+[Unit]
+Description=Disable wifi hotspot setup
+#After=network.target
+
+[Service]
+Type=oneshot
+User=root
+#ExecStartPre=/bin/sleep 90
+ExecStart=/usr/bin/nmcli conn down Hotspot
+#Restart=on-failure
+
+#[Install]
+#WantedBy=multi-user.target

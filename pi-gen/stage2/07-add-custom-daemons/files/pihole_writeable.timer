@@ -1,7 +1,7 @@
 [Unit]
 Description=Schedule pihole_writeable every minute
-RefuseManualStart=no  # Allow manual starts
-RefuseManualStop=no   # Allow manual stops
+#RefuseManualStart=no  # Allow manual starts
+#RefuseManualStop=no   # Allow manual stops
 
 [Timer]
 #Execute job if it missed a run due to machine being off

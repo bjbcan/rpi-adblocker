@@ -24,16 +24,12 @@ cp -vR $SOURCE/* .
 
 echo "done."
 
-IMG_NAME=2022-11-24-bradblocker-lite;
 
-# in guest VM
-./mounthost.sh  # mount the host files in the guest/build OS
-./copyfiles.sh # copy the build files from host to guest/build OS
-sudo CONTINUE=1 ./build.sh; # continue from last build 
-sudo CLEAN=1 ./build.sh; # rebuild last stage
-sudo ./build.sh; # start from fresh
-mv work/bradblocker/export-image/$IMG_NAME.img ../DesktopHost/rpi-adblocker/ ; 
-mv deploy/image_$IMG_NAME.zip ../DesktopHost/rpi-adblocker/
+
+# re-Building images
+docker builder prune
+docker rmi pi-gen
+cp -vR ../rpi-adblocker/pi-gen/ .
 
 # in host Mac
 # gzip, send to macmini, copy to sd; [!] try this with 4k block size (faster?)

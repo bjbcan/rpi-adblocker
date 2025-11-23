@@ -1,15 +1,16 @@
 #!/bin/bash
 
-NEW_HOSTNAME=adblocker
-# IP_ADDRESS=192.168.1.91
-# ROUTER=192.168.1.1
+SERIAL=`cat /proc/cpuinfo | grep Serial | cut -d ' ' -f 2 | tail -c 5`
+NEW_HOSTNAME=adblocker-$SERIAL
+IP_ADDRESS=192.168.1.91
+ROUTER=192.168.1.1
 # SSID=
 # # if plaintext password, then `-p` arg is required in:
 # # /usr/lib/raspberrypi-sys-mods/imager_custom set_wlan -p $SSID $PSK $COUNTRY
 # PSK=
 # USE_WLAN0=true # default to wlan0, if false then use eth0
 COUNTRY=CA
-SERIAL=`cat /proc/cpuinfo | grep Serial | cut -d ' ' -f 2 | tail -c 5`
+
 
 set +e
 
@@ -149,6 +150,28 @@ method=auto
 HOTSPOTEOF
 chmod 600 /etc/NetworkManager/system-connections/Hotspot.nmconnection
 
+# write an interface file for the ethernet connection
+cat >/etc/NetworkManager/system-connections/Wired\ connection\ 1.nmconnection  << ETHEOF
+# written by firstrun.sh
+[connection]
+id=Wired
+uuid=aa327258-cef9-4756-83b5-b4db9d303a5a
+type=ethernet
+interface-name=eth0
+
+[ethernet]
+
+[ipv4]
+address1=$IP_ADDRESS/24,$ROUTER
+dns=8.8.8.8;$ROUTER;
+method=manual
+
+[ipv6]
+addr-gen-mode=default
+method=auto
+ETHEOF
+chmod 600 /etc/NetworkManager/system-connections/Wired\ connection\ 1.nmconnection
+
 if [ -f /usr/lib/raspberrypi-sys-mods/imager_custom ]; then
    /usr/lib/raspberrypi-sys-mods/imager_custom set_keymap 'us'
    /usr/lib/raspberrypi-sys-mods/imager_custom set_timezone 'America/Toronto'
@@ -165,6 +188,20 @@ XKBOPTIONS=""
 KBEOF
    dpkg-reconfigure -f noninteractive keyboard-configuration
 fi
+
+printf "--\n" >> "/etc/issue"
+printf "Wifi hotspot for configuration purposes will be deleted after 10m. \n " >> "/etc/issue"
+printf " - to stop it from disabling: sudo systemctl stop wifi_hotspot_disable.timer \n" >> "/etc/issue"
+printf "To configure eth0 with static a new static IP:\n" >> "/etc/issue"
+printf " - sudo nmcli con add type ethernet ifname eth0 con-name Wired \n
+            ip4 192.168.0.11/24  gw4 192.168.0.1 \n
+           sudo nmcli con mod Wired ipv4.dns "8.8.8.8 192.168.0.1" ipv4.method manual \n
+           sudo nmcli con Wired up" >> "/etc/issue"
+printf " sudo vi /etc/NetworkManager/Wired\ connection\ 1.nmconnection \n" >> "/etc/issue"
+printf " sudo nmcli reload\n" >> "/etc/issue"
+printf " sudo nmcli c up Wired\ connection\ 1\n" >> "/etc/issue"
+printf "--\n" >> "/etc/issue"
+
 
 # move the file instead of delete
 mv /boot/firmware/firstrun.sh /boot/firmware/firstrun.sh.done

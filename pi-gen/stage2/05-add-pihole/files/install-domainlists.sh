@@ -13,7 +13,7 @@ social="(\.|^)snapchat\.com$|(\.|^)sc-cdn\.net$|(\.|^)sc-cdn\.net$|(\.|^)t.co$|(
 streaming_video="(\.|^)netflix\.com$|(\.|^)netflix\.ca$|(\.|^)netflix\.net$|(\.|^)dssott\.com$|(\.|^)disneyplus\.com$|(\.|^)disney-plus\.net$|(\.|^)primevideo\.com$|(\.|^)amazonvideo\.com$|(\.|^)twitch\.tv$"
 youtube="(\.|^)youtube\.com$|(\.|^)googlevideo\.com$|(\.|^)googleapis\.com$"
 facebookinsta="(\.|^)facebook\.com$|(\.|^)fbcdn\.net$"
-tiktok="(\.|^)tiktok\.com$|(\.|^)tiktokv\.com$(\.|^)tiktokcdn\.com$"
+tiktok="(\.|^)tiktok\.com$|(\.|^)tiktokv\.com$|(\.|^)tiktokcdn\.com$"
 
 
 for domainlist in ${domainlists[@]} ; do

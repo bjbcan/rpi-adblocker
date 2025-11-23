@@ -35,10 +35,13 @@ systemctl enable pihole_writeable.timer
 systemctl start pihole_writeable.timer
 systemctl enable pihole_writeable
 systemctl start pihole_writeable
-# systemctl enable wifi_hotspot_disable.timer
-# systemctl start wifi_hotspot_disable.timer
-systemctl enable wifi_hotspot_disable
-systemctl start wifi_hotspot_disable
+systemctl enable wifi_hotspot_disable.timer
+systemctl start wifi_hotspot_disable.timer
+#systemctl enable wifi_hotspot_disable
+#systemctl start wifi_hotspot_disable
+
+systemctl restart nginx
+
 
 
 exit 0
