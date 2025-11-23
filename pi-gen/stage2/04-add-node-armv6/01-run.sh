@@ -4,6 +4,8 @@ export NODEV7URL=https://nodejs.org/dist/v19.9.0/node-v19.9.0-linux-armv7l.tar.g
 export NODEV6URL=https://unofficial-builds.nodejs.org/download/release/v19.4.0/node-v19.4.0-linux-armv6l.tar.gz
 export NODEARM64URL=https://nodejs.org/dist/v19.9.0/node-v19.9.0-linux-arm64.tar.gz
 
+install -v -m 440 files/pi        "${ROOTFS_DIR}/etc/sudoers.d/"
+
 on_chroot << EOF
 
 NODEURL=$NODEV6URL    
@@ -24,5 +26,7 @@ rm -rf node-*-linux-*
 node -v
 npm -v
 npm install -g crontab-ui
+
+
 
 EOF

@@ -1,0 +1,2 @@
+# allow user pi to change network settings including when executing a web app
+pi ALL=(ALL) NOPASSWD: /usr/bin/nmcli

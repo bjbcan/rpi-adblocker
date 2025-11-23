@@ -1,0 +1,123 @@
+eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 192.168.2.9  netmask 255.255.255.0  broadcast 192.168.2.255
+        inet6 fe80::ba27:ebff:feaa:4cdc  prefixlen 64  scopeid 0x20<link>
+        ether b8:27:eb:aa:4c:dc  txqueuelen 1000  (Ethernet)
+        RX packets 210  bytes 18875 (18.4 KiB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 255  bytes 28093 (27.4 KiB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+default via 192.168.2.1 dev eth0 src 192.168.2.9 metric 202 
+default via 192.168.2.1 dev wlan0 proto dhcp src 192.168.2.44 metric 303 
+192.168.2.0/24 dev eth0 proto dhcp scope link src 192.168.2.9 metric 202 
+192.168.2.0/24 dev wlan0 proto dhcp scope link src 192.168.2.44 metric 303 
+
+Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+default         192.168.2.1     0.0.0.0         UG    202    0        0 eth0
+default         192.168.2.1     0.0.0.0         UG    303    0        0 wlan0
+192.168.2.0     0.0.0.0         255.255.255.0   U     202    0        0 eth0
+192.168.2.0     0.0.0.0         255.255.255.0   U     303    0        0 wlan0
+
+Dec 30 18:47:00 rpi-bookworm-test NetworkManager[469]: <info>  [1735602420.0758] Config: added 'ssid' value 'BELL530'
+Dec 30 18:47:00 rpi-bookworm-test NetworkManager[469]: <info>  [1735602420.0758] Config: added 'scan_ssid' value '1'
+Dec 30 18:47:00 rpi-bookworm-test NetworkManager[469]: <info>  [1735602420.0759] Config: added 'bgscan' value 'simple:30:-70:86400'
+Dec 30 18:47:00 rpi-bookworm-test NetworkManager[469]: <info>  [1735602420.0759] Config: added 'key_mgmt' value 'WPA-PSK WPA-PSK-SHA256 FT-PSK'
+Dec 30 18:47:00 rpi-bookworm-test NetworkManager[469]: <info>  [1735602420.0760] Config: added 'psk' value '<hidden>'
+
+Dec 31 10:45:43 rpi-bookworm-test NetworkManager[469]: <info>  [1735659943.4403] Config: added 'ssid' value 'pi'
+Dec 31 10:45:43 rpi-bookworm-test NetworkManager[469]: <info>  [1735659943.4405] Config: added 'mode' value '2'
+Dec 31 10:45:43 rpi-bookworm-test NetworkManager[469]: <info>  [1735659943.4405] Config: added 'frequency' value '2437'
+Dec 31 10:45:43 rpi-bookworm-test NetworkManager[469]: <info>  [1735659943.4406] Config: added 'key_mgmt' value 'WPA-PSK WPA-PSK-SHA256'
+Dec 31 10:45:43 rpi-bookworm-test NetworkManager[469]: <info>  [1735659943.4407] Config: added 'psk' value '<hidden>'
+Dec 31 10:45:43 rpi-bookworm-test NetworkManager[469]: <info>  [1735659943.4407] Config: added 'proto' value 'RSN'
+Dec 31 10:45:43 rpi-bookworm-test NetworkManager[469]: <info>  [1735659943.4408] Config: added 'pairwise' value 'CCMP'
+
+sudo nmcli connection add con-name 'Hotspot' \
+    ifname wlan0 type wifi slave-type bridge master bridge0 \
+    wifi.mode ap wifi.ssid pi wifi-sec.key-mgmt wpa-psk \
+    wifi-sec.proto rsn wifi-sec.pairwise ccmp \
+    wifi-sec.psk "raspberry"
+
+# setup wifi-eth bridge and wifi hotspot
+sudo nmcli connection add type bridge con-name 'Bridge' ifname bridge0
+sudo nmcli connection add type ethernet slave-type bridge \
+    con-name 'Ethernet' ifname eth0 master bridge0
+
+sudo nmcli con add type wifi ifname wlan0 con-name Hotspot autoconnect yes \
+        ssid pi 802-11-wireless.mode ap 802-11-wireless.band bg \
+        ipv4.method shared wifi-sec.key-mgmt wpa-psk wifi-sec.psk "raspberry"
+sudo nmcli con up Hotspot   
+sudo nmcli connection up Bridge
+ 
+
+
+# create new Wired connection (after deleting one); setting ipv4 settings
+sudo nmcli con add type ethernet ifname eth0 con-name Wired \
+    ip4 192.168.2.11/24  gw4 192.168.2.1 
+sudo nmcli con mod Wired ipv4.dns "8.8.8.8 192.168.2.1" ipv4.method manual 
+sudo nmcli con Wired up
+
+
+/etc/NetworkManager/system-connections $ sudo cat Wired.nmconnection 
+[connection]
+id=Wired
+uuid=aa327258-cef9-4756-83b5-b4db9d303a5a
+type=ethernet
+interface-name=eth0
+timestamp=1735682452
+
+[ethernet]
+
+[ipv4]
+address1=192.168.2.61/24,192.168.2.1
+dns=8.8.8.8;192.168.2.1;
+method=manual
+
+[ipv6]
+addr-gen-mode=default
+method=auto
+
+[proxy]
+
+/etc/NetworkManager/system-connections $ sudo cat preconfigured.nmconnection 
+[connection]
+id=preconfigured
+uuid=cb1f16e3-4b08-42a4-94ad-99a6eeeb4891
+type=wifi
+[wifi]
+mode=infrastructure
+ssid=BELL530
+hidden=false
+[ipv4]
+method=auto
+[ipv6]
+addr-gen-mode=default
+method=auto
+[proxy]
+[wifi-security]
+key-mgmt=wpa-psk
+psk=?
+
+
+/etc/NetworkManager/system-connections $ sudo cat Hotspot.nmconnection 
+[connection]
+id=Hotspot
+uuid=d183d1d4-cf03-415e-9311-918d898d988d
+type=wifi
+interface-name=wlan0
+
+[wifi]
+band=bg
+mode=ap
+ssid=pi
+
+[wifi-security]
+key-mgmt=wpa-psk
+psk=raspberry
+
+[ipv4]
+method=shared
+
+[ipv6]
+addr-gen-mode=default
+method=auto

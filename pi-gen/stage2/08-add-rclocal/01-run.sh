@@ -9,6 +9,8 @@ echo "+++ contents of /etc/rc.local +++++"
 cat /etc/rc.local
 echo "+++ contents of /etc/rc.local +++++"
 
+# cat /lib/systemd/system/wifi_hotspot_disable.service
+
 
 EOF
 
