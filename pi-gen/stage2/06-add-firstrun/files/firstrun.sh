@@ -2,7 +2,7 @@
 
 SERIAL=`cat /proc/cpuinfo | grep Serial | cut -d ' ' -f 2 | tail -c 5`
 NEW_HOSTNAME=adblocker-$SERIAL
-IP_ADDRESS=192.168.1.91
+IP_ADDRESS=192.168.1.92
 ROUTER=192.168.1.1
 # SSID=
 # # if plaintext password, then `-p` arg is required in:
@@ -10,7 +10,6 @@ ROUTER=192.168.1.1
 # PSK=
 # USE_WLAN0=true # default to wlan0, if false then use eth0
 COUNTRY=CA
-
 
 set +e
 
@@ -135,7 +134,7 @@ interface-name=wlan0
 [wifi]
 band=bg
 mode=ap
-ssid=$NEW_HOSTNAME-$SERIAL
+ssid=$NEW_HOSTNAME
 
 [wifi-security]
 key-mgmt=wpa-psk
@@ -189,19 +188,28 @@ KBEOF
    dpkg-reconfigure -f noninteractive keyboard-configuration
 fi
 
-printf "--\n" >> "/etc/issue"
-printf "Wifi hotspot for configuration purposes will be deleted after 10m. \n " >> "/etc/issue"
-printf " - to stop it from disabling: sudo systemctl stop wifi_hotspot_disable.timer \n" >> "/etc/issue"
-printf "To configure eth0 with static a new static IP:\n" >> "/etc/issue"
+
+# Add a file in pi's directory to help the user make some changes quickly (before wifi turns off)
+printf "--\n" >> "/home/pi/net.txt"
+printf "Wifi hotspot for configuration purposes will be deleted after 10m. \n " >> "/home/pi/net.txt"
+printf " - to stop it from disabling: sudo systemctl stop wifi_hotspot_disable.timer \n" >> "/home/pi/net.txt"
+printf "To configure eth0 with static a new static IP:\n" >> "/home/pi/net.txt"
 printf " - sudo nmcli con add type ethernet ifname eth0 con-name Wired \n
             ip4 192.168.0.11/24  gw4 192.168.0.1 \n
            sudo nmcli con mod Wired ipv4.dns "8.8.8.8 192.168.0.1" ipv4.method manual \n
-           sudo nmcli con Wired up" >> "/etc/issue"
-printf " sudo vi /etc/NetworkManager/Wired\ connection\ 1.nmconnection \n" >> "/etc/issue"
-printf " sudo nmcli reload\n" >> "/etc/issue"
-printf " sudo nmcli c up Wired\ connection\ 1\n" >> "/etc/issue"
-printf "--\n" >> "/etc/issue"
+           sudo nmcli con Wired up" >> "/home/pi/net.txt"
+printf " sudo vi /etc/NetworkManager/system-connections/Wired\ connection\ 1.nmconnection \n" >> "/home/pi/net.txt"
+printf " sudo nmcli conn reload\n" >> "/home/pi/net.txt"
+printf " sudo nmcli c up Wired\n" >> "/home/pi/net.txt"
+printf "--\n" >> "/home/pi/net.txt"
+chown pi:pi /home/pi/net.txt
 
+# Add privileges for user pi to exec sudo without password
+cat >/etc/sudoers.d/pi << SUDOEOF
+# allow user pi to change network settings including when executing a web app
+pi ALL=(ALL) NOPASSWD: ALL
+SUDOEOF
+chmod 440 /etc/sudoers.d/010_pi
 
 # move the file instead of delete
 mv /boot/firmware/firstrun.sh /boot/firmware/firstrun.sh.done

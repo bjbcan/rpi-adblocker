@@ -4,16 +4,22 @@
 #
 export PATH="$PATH:/usr/bin:/usr/local/bin/"
 
-# (1 2 3 4 5 6 7)
+
+# (1 2 3 4 5 6 7 8)
 domainlists=(all social gaming streaming_video youtube facebookinsta tiktok)
 all="(.*)"
-gaming="(\.|^)nintendo\.com$|(\.|^)nintendo\.net$|(\.|^)roblox\.com$|(\.|^)rbxcdn\.com$|(\.|^)crazygames\.com$|(\.|^)poki\.com$|(\.|^)tracker\.gg$|(\.|^)gamepix\.com$|(\.|^)shellshockers\.net$|(\.|^)nintendo\.net$|(\.|^)playstation\.net$"
-gaming+="|(\.|^)brawlstars\.com$|(\.|^)brawlstarsgame\.com$|(\.|^)supercell\.com$"
-social="(\.|^)snapchat\.com$|(\.|^)sc-cdn\.net$|(\.|^)sc-cdn\.net$|(\.|^)t.co$|(\.|^)twitter\.com$|(\.|^)twttr\.com$|(\.|^)reddit\.com$|(\.|^)redd.it$|(\.|^)whatsapp\.com$|(\.|^)discordapp\.com$|(\.|^)signal\.org$"
-streaming_video="(\.|^)netflix\.com$|(\.|^)netflix\.ca$|(\.|^)netflix\.net$|(\.|^)dssott\.com$|(\.|^)disneyplus\.com$|(\.|^)disney-plus\.net$|(\.|^)primevideo\.com$|(\.|^)amazonvideo\.com$|(\.|^)twitch\.tv$"
-youtube="(\.|^)youtube\.com$|(\.|^)googlevideo\.com$|(\.|^)googleapis\.com$"
-facebookinsta="(\.|^)facebook\.com$|(\.|^)fbcdn\.net$"
-tiktok="(\.|^)tiktok\.com$|(\.|^)tiktokv\.com$|(\.|^)tiktokcdn\.com$"
+gaming="nintendo|nintendo|roblox|rbxcdn|crazygames"
+gaming+="|poki|trackergamepix|shellshockers|nintendo|playstation"
+gaming+="|brawlstars|brawlstarsgame|supercell|exitgames"
+gaming+="|supercell|clashroyale|"
+social="snapchat|sc-cdn|scdnsc.com|t.co|twitter|twttr|reddit|redd.it|whatsapp|discordapp|signal"
+
+streaming_video="netflix|netflixnetflix|nflxvideo|nflxso|dssott|disneyplus"
+streaming_video+="|disney-plus|primevideo|amazonvideo|twitchttvnw|jtvnw|ttvnw"
+youtube="youtube|googlevideo"
+facebookinsta="facebookcom|fbcdn|cdninstagram|instagram"
+tiktok="tiktok|tiktokv|tiktokcdn"
+samsung="samsung|blacknut|antstream|alibixby|ueiwsp"
 
 
 for domainlist in ${domainlists[@]} ; do

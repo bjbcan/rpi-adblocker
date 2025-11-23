@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # install lighttpd external.conf
-install -v -d			            "${ROOTFS_DIR}/etc/lighttpd"
-install -v -d			            "${ROOTFS_DIR}/etc/lighttpd/conf-enabled"
+install -v -d			                    "${ROOTFS_DIR}/etc/lighttpd"
+install -v -d			                     "${ROOTFS_DIR}/etc/lighttpd/conf-enabled"
 install -v -m 644 files/external.conf		"${ROOTFS_DIR}/etc/lighttpd/conf-enabled/"
 
 # unattended pihole install
@@ -59,15 +59,29 @@ sqlite3 /etc/pihole/gravity.db "select * from domainlist;"
 # need to run pihole -g or gravity.sh ?
 /usr/local/bin/pihole -g
 
-# turn it off so the drive can be unmounted
-ps aux | grep -i pihole
-killall -r pihole
-rm -rf /var/run/pihole/FTL.sock
-ps aux | grep -i pihole
+
 
 # add user pi to group pihole so it can run block/unblock adlist/domainlist
 echo "----"
 adduser pi pihole
+
+# set pihole web UI to no password
+# echo -ne '\n' | pihole admin -p
+
+# get PiHoleController
+echo "Downloading PiHoleController ..."
+curl -q -o /var/www/html/admin/controller.html https://raw.githubusercontent.com/mikeswanson/PiHoleController/main/controller.html
+
+# turn it off so the drive can be unmounted
+SERVICE="pihole-FTL"
+if pgrep -x "pihole-FTL" >/dev/null
+then
+    echo "--= ==--- pihole-FTL is running: kill it."
+    killall -r pihole-FTL
+    rm -rf /var/run/pihole/FTL.sock
+else
+    echo "--= ==--- pihole-FTL not running"
+fi
 
 
 EOF

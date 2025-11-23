@@ -26,10 +26,12 @@ echo "done."
 
 
 
-# re-Building images
-docker builder prune
-docker rmi pi-gen
-cp -vR ../rpi-adblocker/pi-gen/ .
+
+
+# full clean build; run from pi-gen directory
+docker builder prune -f; docker rmi -f pi-gen; docker rm -v pigen_work; docker rmi -f pigen_work; 
+cp -vR ../rpi-adblocker/pi-gen/ .; 
+./build-docker.sh
 
 # in host Mac
 # gzip, send to macmini, copy to sd; [!] try this with 4k block size (faster?)
@@ -39,17 +41,17 @@ sudo diskutil unmount /dev/disk4s1;
 sudo dd if=$IMG_NAME.img of=/dev/disk4 bs=2m status=progress
 
 # Run some tests in QEMU
-# in host Mac
-$QEMU_IMG_LOC=/Users/brad/Desktop/rpi_qemu/macos-qemu-rpi/native-emulation
-$IMG_LOC=/Users/brad/Desktop/rpi-adblocker
-cp $IMG_LOC/$IMG_NAME.img $QEMU_IMG_LOC
-qemu-img resize -f raw $IMG_LOG/$IMG_NAME.img 4G
-#set IMAGE_FILE in run.sh
-sed -i.bak "s|readonly\ IMAGE=.*|readonly\ IMAGE\=\'$IMG_NAME\'|g" run.sh
-./run.sh
+# # in host Mac
+# $QEMU_IMG_LOC=/Users/brad/Desktop/rpi_qemu/macos-qemu-rpi/native-emulation
+# $IMG_LOC=/Users/brad/Desktop/rpi-adblocker
+# cp $IMG_LOC/$IMG_NAME.img $QEMU_IMG_LOC
+# qemu-img resize -f raw $IMG_LOG/$IMG_NAME.img 4G
+# #set IMAGE_FILE in run.sh
+# sed -i.bak "s|readonly\ IMAGE=.*|readonly\ IMAGE\=\'$IMG_NAME\'|g" run.sh
+# ./run.sh
 
 # from pi-run dir
-IMAGE_FILE=../pi-gen/deploy/2025-01-05-bradblocker-lite-qemu.img
+IMAGE_FILE=../pi-gen/deploy/2025-03-06-adblocker-lite-qemu.img
 PTB_FILE=bcm2710-rpi-3-b-plus.dtb
 KERNEL_FILE=kernel8.img
 qemu-img resize -f raw "$IMAGE_FILE" 4G
@@ -57,5 +59,16 @@ sudo qemu-system-aarch64 \
 	-m 1024 -M raspi3b -kernel kernel8.img \
 	-dtb bcm2710-rpi-3-b-plus.dtb -sd ${IMAGE_FILE} \
 	-append "console=ttyAMA0 root=/dev/mmcblk0p2 rw rootwait rootfstype=ext4" \
-	-nographic -device usb-net,netdev=net0 \
-	-netdev user,id=net0,hostfwd=tcp::5555-:22,hostfwd=tcp::8888-:80
+	-nographic 
+	
+	# -device usb-net,netdev=net0 \
+	# -netdev user,id=net0,hostfwd=tcp::5555-:22,hostfwd=tcp::8888-:80
+
+qemu-system-aarch64 \
+    -M raspi3b \
+    -cpu cortex-a72 \
+    -append "rw earlyprintk loglevel=8 console=ttyAMA0,115200 dwc_otg.lpm_enable=0 root=/dev/mmcblk0p2 rootdelay=1" \
+    -dtb bcm2710-rpi-3-b-plus.dtb \
+    -drive "if=sd,format=raw,file=$IMAGE_FILE"  \
+    -kernel kernel8.img \
+    -m 1G -smp 4 -nographic 

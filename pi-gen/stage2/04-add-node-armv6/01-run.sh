@@ -4,20 +4,20 @@ export NODEV7URL=https://nodejs.org/dist/v19.9.0/node-v19.9.0-linux-armv7l.tar.g
 export NODEV6URL=https://unofficial-builds.nodejs.org/download/release/v19.4.0/node-v19.4.0-linux-armv6l.tar.gz
 export NODEARM64URL=https://nodejs.org/dist/v19.9.0/node-v19.9.0-linux-arm64.tar.gz
 
-install -v -m 440 files/pi        "${ROOTFS_DIR}/etc/sudoers.d/"
+# install -v -m 440 files/pi        "${ROOTFS_DIR}/etc/sudoers.d/"
 
 on_chroot << EOF
 
-NODEURL=$NODEV6URL    
-# if [[  ( $ARMV == 7 ) || ( $ARMV == 8 ) ]]; then
-#     NODEURL=$NODEV7URL
-#     echo "=~+~+~ ARMv7 chosen for node.js install"
-# else
-#     NODEURL=$NODEV6URL
-#     echo "=~+~+~ ARMv6 chosen for node.js install"
-# fi
+# NODEURL=$NODEV6URL    
+# # if [[  ( $ARMV == 7 ) || ( $ARMV == 8 ) ]]; then
+# #     NODEURL=$NODEV7URL
+# #     echo "=~+~+~ ARMv7 chosen for node.js install"
+# # else
+# #     NODEURL=$NODEV6URL
+# #     echo "=~+~+~ ARMv6 chosen for node.js install"
+# # fi
 
-echo "=~+~+~ ARMv == ${ARMV} and ${NODEURL} and v6=${NODEV6URL} and v7=${NODEV7URL}"
+# echo "=~+~+~ ARMv == ${ARMV} and ${NODEURL} and v6=${NODEV6URL} and v7=${NODEV7URL}"
 
 wget -O - $NODEARM64URL | tar xz
 rm -rf node-*.tar.gz
