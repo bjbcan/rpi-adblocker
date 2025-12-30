@@ -1,0 +1,18 @@
+[Unit]
+Description=internet-buttons
+After=network.target
+StartLimitIntervalSec=30
+StartLimitBurst=5
+
+[Service]
+Environment=APP_PORT=3000
+Environment=PIHOLE_API_URL=https://pi.hole/api
+Type=simple
+User=pi
+WorkingDirectory=/home/pi/internet-buttons
+ExecStart=npm start
+Restart=on-failure
+RestartSec=1s
+
+[Install]
+WantedBy=multi-user.target

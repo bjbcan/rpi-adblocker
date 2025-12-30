@@ -31,17 +31,18 @@ printf "%s %s %s\n\n%s %s\n\n" "$PRE_MSG" '\n' '\l' eth0:"$IP_ETH0", wlan0:"$IP_
 #
 systemctl enable crontabui
 systemctl start crontabui
+systemctl enable internet-buttons
+systemctl start internet-buttons
 systemctl enable pihole_writeable.timer
 systemctl start pihole_writeable.timer
 systemctl enable pihole_writeable
 systemctl start pihole_writeable
 systemctl enable wifi_hotspot_disable.timer
 systemctl start wifi_hotspot_disable.timer
-#systemctl enable wifi_hotspot_disable
-#systemctl start wifi_hotspot_disable
+
 
 systemctl restart nginx
-
+systemctl restart crontabui
 
 
 exit 0

@@ -6,6 +6,7 @@ install -v -m 644 files/pihole_writeable.timer		"${ROOTFS_DIR}/lib/systemd/syste
 install -v -m 644 files/wifi_hotspot_disable.service		"${ROOTFS_DIR}/lib/systemd/system/"
 install -v -m 644 files/wifi_hotspot_disable.timer		"${ROOTFS_DIR}/lib/systemd/system/"
 install -v -m 644 files/crontabui.service		    "${ROOTFS_DIR}/lib/systemd/system/"
+install -v -m 644 files/internet-buttons.service		    "${ROOTFS_DIR}/lib/systemd/system/"
 install -v -m 644 files/01-dnsmasq.conf		    "${ROOTFS_DIR}/etc/NetworkManager/dnsmasq-shared.d/"
 
 
@@ -19,6 +20,9 @@ on_chroot << EOF
 
 echo "Setting ownership of /home/pi/crontabui to pi:pi"
 chown -R pi:pi /home/pi/crontabui
+
+echo "Setting ownership of /home/pi/internet-buttons to pi:pi"
+chown -R pi:pi /home/pi/internet-buttons
 
 
 EOF
