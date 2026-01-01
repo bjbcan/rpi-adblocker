@@ -23,11 +23,11 @@ on_chroot << EOF
 # echo "====$$$#####==="
 
 # clean previous install
-echo "Before cleanup ..." 
-ls /etc/pihole/
+# echo "Before cleanup ..." 
+# ls /etc/pihole/
 rm -rf /etc/pihole/gravity* /etc/pihole/migration_backup
-echo "After cleanup ..." 
-ls /etc/pihole/
+# echo "After cleanup ..." 
+# ls /etc/pihole/
 
 wget -O basic-install.sh https://install.pi-hole.net
 
@@ -42,10 +42,10 @@ PIHOLE_SKIP_OS_CHECK=true bash basic-install.sh --unattended
 # echo "--- what is in the gravity db domainlists? ---"
 # sqlite3 /etc/pihole/gravity.db "select * from domainlist;"
 
-ls /etc/pihole/
+# ls /etc/pihole/
 
 # install the regex domain lists
-ls -al /etc/pihole/gravity.db
+# ls -al /etc/pihole/gravity.db
 chmod a+w /etc/pihole/gravity.db
 bash /etc/pihole/install-domainlists.sh
 bash /etc/pihole/install-adlists.sh

@@ -12,3 +12,4 @@ FIRST_USER_PASS=raspberry
 ENABLE_SSH=1
 WPA_COUNTRY=CA
 STAGE_LIST="stage0 stage1 stage2"
+export GLOBAL_IP=192.168.2.57

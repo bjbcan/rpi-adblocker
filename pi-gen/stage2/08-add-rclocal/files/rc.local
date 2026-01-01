@@ -59,6 +59,9 @@ else
     echo "Could not find an IPv4 address for $INTERFACE. Check the interface name." >&2
 fi
 
+echo "--= ==--- pihole.toml "
+cat /etc/pihole/pihole.toml | grep -B2 -A3 "hosts\ ="
+echo "--= ==--- pihole.toml "
 
 
 exit 0

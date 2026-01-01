@@ -2,18 +2,18 @@
 
 SERIAL=`cat /proc/cpuinfo | grep Serial | cut -d ' ' -f 2 | tail -c 5`
 NEW_HOSTNAME=adblocker-$SERIAL
-IP_ADDRESS=192.168.1.92
-ROUTER=192.168.1.1
+IP_ADDRESS=GLOBAL_IP
+ROUTER=`echo $IP_ADDRESS | sed -E 's/([0-9]+\.[0-9]+\.[0-9]+)\.[0-9]{1,3}/\1.1/'`
 # SSID=
 # # if plaintext password, then `-p` arg is required in:
 # # /usr/lib/raspberrypi-sys-mods/imager_custom set_wlan -p $SSID $PSK $COUNTRY
 # PSK=
 # USE_WLAN0=true # default to wlan0, if false then use eth0
-COUNTRY=CA
+COUNTRY=WPA_COUNTRY
 
 set +e
 
-CURRENT_HOSTNAME=`cat /etc/hostname | tr -d " \t\n\r"`
+# CURRENT_HOSTNAME=`cat /etc/hostname | tr -d " \t\n\r"`
 if [ -f /usr/lib/raspberrypi-sys-mods/imager_custom ]; then
    /usr/lib/raspberrypi-sys-mods/imager_custom set_hostname $NEW_HOSTNAME
   touch /boot/brad-imager_used_for_set_hostname
@@ -27,14 +27,14 @@ FIRSTUSER=`getent passwd 1000 | cut -d: -f1`
 FIRSTUSERHOME=`getent passwd 1000 | cut -d: -f6`
 if [ -f /usr/lib/raspberrypi-sys-mods/imager_custom ]; then
    /usr/lib/raspberrypi-sys-mods/imager_custom enable_ssh
-  touch /boot/brad-imager_used_for_enable_ssh
+#   touch /boot/brad-imager_used_for_enable_ssh
 # else #typically not executed
 #    systemctl enable ssh
 fi
 
 if [ -f /usr/lib/userconf-pi/userconf ]; then
    /usr/lib/userconf-pi/userconf 'pi' '$5$WboLUKN8Cl$OKqRPDSsmnRxu2250Ao1hAsr.b00Qx24NxnNP9A39N/'
-  touch /boot/brad-userconf-pi_used
+#   touch /boot/brad-userconf-pi_used
 # else #typically not executed
 #    echo "$FIRSTUSER:"'$5$WboLUKN8Cl$OKqRPDSsmnRxu2250Ao1hAsr.b00Qx24NxnNP9A39N/' | chpasswd -e
 #    if [ "$FIRSTUSER" != "pi" ]; then

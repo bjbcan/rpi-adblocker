@@ -18,22 +18,23 @@ cp -R node-*-linux-*/* /usr/local
 rm -rf node-*-linux-*
 node -v
 npm -v
-cat /root/.npm/_logs/*
+# cat /root/.npm/_logs/*
 
+# Install crontab-ui
 CI=true npm install -g crontab-ui
 
 
 echo "Downloading internet-buttons"
 cd /home/pi/
-ls -al 
+# ls -al 
 export GIT_TERMINAL_PROMPT=0
-git -v
+# git -v
 echo "Cloning internet-buttons"
 git clone https://github.com/bjbcan/internet-buttons.git
 cd internet-buttons
 chown -R pi:pi /home/pi/internet-buttons
 echo "Installing internet-buttons"
-CI=true npm install --verbose
+CI=true npm install
 
 
 

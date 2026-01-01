@@ -33,6 +33,22 @@ docker builder prune -f; docker rmi -f pi-gen; docker rm -v pigen_work; docker r
 cp -vR ../rpi-adblocker/pi-gen/ .; 
 ./build-docker.sh
 
+# rebuild just the last stage 
+cp -vR ../rpi-adblocker/pi-gen/ .; 
+PRESERVE_CONTAINER=1 CONTINUE=1 CLEAN=1 ./build-docker.sh
+
+# inspect failed image
+sudo docker run -it --privileged --volumes-from=pigen_work pi-gen /bin/bash
+
+# continue after a failed stage
+cp -vR ../rpi-adblocker/pi-gen/ .; 
+CONTINUE=1 ./build-docker.sh
+
+
+# inspect built image
+sudo docker run -it --privileged pi-gen /bin/bash
+
+
 # in host Mac
 # gzip, send to macmini, copy to sd; [!] try this with 4k block size (faster?)
 # 512b is 1506 kB/s
