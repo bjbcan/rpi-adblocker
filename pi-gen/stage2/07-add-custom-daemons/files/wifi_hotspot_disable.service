@@ -10,4 +10,4 @@ ExecStart=/usr/bin/nmcli conn down Hotspot
 #Restart=on-failure
 
 #[Install]
-#WantedBy=multi-user.target
+#WantedBy=timers.target

@@ -18,9 +18,9 @@ install -v -m 777 files/block-domainlist.sh          "${ROOTFS_DIR}/home/pi/"
 export MYVAR=brad_var_passed
 
 on_chroot << EOF
-echo "====$$$MYVAR#####==="
-echo ${MYVAR}
-echo "====$$$#####==="
+# echo "====$$$MYVAR#####==="
+# echo ${MYVAR}
+# echo "====$$$#####==="
 
 # clean previous install
 echo "Before cleanup ..." 
@@ -37,10 +37,10 @@ wget -O basic-install.sh https://install.pi-hole.net
 
 PIHOLE_SKIP_OS_CHECK=true bash basic-install.sh --unattended
 
-echo "--- what is in the gravity db adlist? ---"
-sqlite3 /etc/pihole/gravity.db "select * from adlist;"
-echo "--- what is in the gravity db domainlists? ---"
-sqlite3 /etc/pihole/gravity.db "select * from domainlist;"
+# echo "--- what is in the gravity db adlist? ---"
+# sqlite3 /etc/pihole/gravity.db "select * from adlist;"
+# echo "--- what is in the gravity db domainlists? ---"
+# sqlite3 /etc/pihole/gravity.db "select * from domainlist;"
 
 ls /etc/pihole/
 
@@ -51,10 +51,10 @@ bash /etc/pihole/install-domainlists.sh
 bash /etc/pihole/install-adlists.sh
 bash /etc/pihole/install-groups.sh
 
-echo "--- what is in the gravity db adlist? ---"
-sqlite3 /etc/pihole/gravity.db "select * from adlist;"
-echo "--- what is in the gravity db domainlist? ---"
-sqlite3 /etc/pihole/gravity.db "select * from domainlist;"
+# echo "--- what is in the gravity db adlist? ---"
+# sqlite3 /etc/pihole/gravity.db "select * from adlist;"
+# echo "--- what is in the gravity db domainlist? ---"
+# sqlite3 /etc/pihole/gravity.db "select * from domainlist;"
 
 # need to run pihole -g or gravity.sh ?
 /usr/local/bin/pihole -g
@@ -68,9 +68,9 @@ adduser pi pihole
 # set pihole web UI to no password
 # echo -ne '\n' | pihole admin -p
 
-# get PiHoleController
-echo "Downloading PiHoleController ..."
-curl -q -o /var/www/html/admin/controller.html https://raw.githubusercontent.com/mikeswanson/PiHoleController/main/controller.html
+# # get PiHoleController
+# echo "Downloading PiHoleController ..."
+# curl -q -o /var/www/html/admin/controller.html https://raw.githubusercontent.com/mikeswanson/PiHoleController/main/controller.html
 
 # turn it off so the drive can be unmounted
 SERVICE="pihole-FTL"
@@ -82,6 +82,10 @@ then
 else
     echo "--= ==--- pihole-FTL not running"
 fi
+
+echo "--= ==--- pihole.toml "
+cat /etc/pihole/pihole.toml | grep -B2 -A3 "hosts\ ="
+echo "--= ==--- pihole.toml "
 
 
 EOF

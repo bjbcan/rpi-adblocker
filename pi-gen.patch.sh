@@ -40,6 +40,13 @@ cp -vR ../rpi-adblocker/pi-gen/ .;
 sudo diskutil unmount /dev/disk4s1; 
 sudo dd if=$IMG_NAME.img of=/dev/disk4 bs=2m status=progress
 
+# use rpi-imager, it's far faster
+/Applications/Raspberry\ Pi\ Imager.app/Contents/MacOS/rpi-imager \
+    --cli \
+    --debug \
+    ~/Desktop/code/pi-gen/deploy/2025-12-31-adblocker-lite.img \
+    /dev/disk4
+
 # Run some tests in QEMU
 # # in host Mac
 # $QEMU_IMG_LOC=/Users/brad/Desktop/rpi_qemu/macos-qemu-rpi/native-emulation
@@ -51,7 +58,7 @@ sudo dd if=$IMG_NAME.img of=/dev/disk4 bs=2m status=progress
 # ./run.sh
 
 # from pi-run dir
-IMAGE_FILE=../pi-gen/deploy/2025-03-06-adblocker-lite-qemu.img
+IMAGE_FILE=../pi-gen/deploy/2025-12-31-adblocker-lite-qemu.img
 PTB_FILE=bcm2710-rpi-3-b-plus.dtb
 KERNEL_FILE=kernel8.img
 qemu-img resize -f raw "$IMAGE_FILE" 4G

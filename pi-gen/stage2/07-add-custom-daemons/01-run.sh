@@ -24,5 +24,8 @@ chown -R pi:pi /home/pi/crontabui
 echo "Setting ownership of /home/pi/internet-buttons to pi:pi"
 chown -R pi:pi /home/pi/internet-buttons
 
+echo "127.0.0.1 pi.hole" >> /etc/hosts
+echo "127.0.0.1 pihole" >> /etc/hosts
+
 
 EOF
