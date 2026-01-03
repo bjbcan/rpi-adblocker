@@ -16,6 +16,9 @@ TIKTOK=7
 # installed adlist ids; #1 is StevenBlack list
 ADULTGAMBLING=2
 
+# should redesign groups: TV, Kids Phones & Tablets, Gaming Devices, 
+# Kids Laptops, Work Laptops, 
+
 # installed Groups
 DEFAULT=0
 KIDS=1
@@ -43,7 +46,6 @@ sqlite3 /etc/pihole/gravity.db ".dump group"
 # );
 echo "associate Adlists to Default and Kids group ID=1 (Default is group id=0)"
 sqlite3 /etc/pihole/gravity.db "insert or ignore into adlist_by_group (adlist_id, group_id) VALUES ($ADULTGAMBLING, $KIDS);"
-# need to do for default as well?
 sqlite3 /etc/pihole/gravity.db ".dump adlist_by_group"
 
 # associate domainlists to Default and Kids group ....
