@@ -6,19 +6,22 @@ export PATH="$PATH:/usr/bin:/usr/local/bin/"
 
 
 # (1 2 3 4 5 6 7 8)
-domainlists=(all social gaming streaming_video youtube facebookinsta tiktok)
+domainlists=(all social gaming streaming_video youtube facebookinsta tiktok all2 all3 all4 samsung)
 all="(.*)"
+all2="(.*)|(.*)"
+all3="(.*)|(.*)|(.*)"
+all4="(.*)|(.*)|(.*)|(.*)"
 gaming="nintendo|nintendo|roblox|rbxcdn|crazygames"
 gaming+="|poki|trackergamepix|shellshockers|nintendo|playstation"
 gaming+="|brawlstars|brawlstarsgame|supercell|exitgames"
-gaming+="|supercell|clashroyale|baseballbros|raidfield"
+gaming+="|supercell|clashroyale|baseballbros|raidfield|geometrydash"
 social="snapchat|sc-cdn|scdnsc|twitter|twttr|^x\.com|discordapp|signal|gossiphubdaily"
 
 streaming_video="netflix|nflxvideo|nflxso|dssott|disneyplus"
 streaming_video+="|disney-plus|primevideo|amazonvideo|twitchttvnw|jtvnw|ttvnw"
 streaming_video+="|minerva\.devices|aiv\-delivery|amazon\.pv\-cdn|prime\-video\.amazon"
 youtube="youtube|googlevideo"
-facebookinsta="facebookcom|fbcdn|cdninstagram|instagram"
+facebookinsta="facebook|fbcdn|cdninstagram|instagram|threads"
 tiktok="tiktok|tiktokv|tiktokcdn"
 samsung="samsung|blacknut|antstream|alibixby|ueiwsp"
 

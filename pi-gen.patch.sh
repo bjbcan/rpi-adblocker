@@ -35,7 +35,7 @@ cp -vR ../rpi-adblocker/pi-gen/ .;
 
 # rebuild just the last stage 
 cp -vR ../rpi-adblocker/pi-gen/ .; 
-PRESERVE_CONTAINER=1 CONTINUE=1 CLEAN=1 ./build-docker.sh
+PRESERVE_CONTAINER=1 CONTINUE=1 CLEAN=1 ./build-docker.sh 
 
 # inspect failed image
 sudo docker run -it --privileged --volumes-from=pigen_work pi-gen /bin/bash
